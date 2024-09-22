@@ -1,5 +1,13 @@
 import type { MetaFunction } from "@remix-run/node";
 
+import { LoaderFunction } from '@remix-run/node'
+import { requireUserId } from '~/utils/auth.server'
+
+export const loader: LoaderFunction = async ({ request }) => {
+  await requireUserId(request)
+  return null
+}
+
 export const meta: MetaFunction = () => {
   return [
     { title: "New Remix App" },
@@ -10,7 +18,7 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   return (
     <div className="font-sans p-4">
-      <h1 className="text-3xl">Welcome to Remix</h1>
+      <h1 className="bg-amber-200 text-amber-200 text-3xl ml-5 mt-5">Welcome to Remix</h1>
       <ul className="list-disc mt-4 pl-6 space-y-2">
         <li>
           <a
