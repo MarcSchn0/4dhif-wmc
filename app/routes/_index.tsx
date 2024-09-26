@@ -1,11 +1,11 @@
-import type { MetaFunction } from "@remix-run/node";
+import {MetaFunction, redirect} from "@remix-run/node";
 
 import { LoaderFunction } from '@remix-run/node'
 import { requireUserId } from '~/utils/auth.server'
 
 export const loader: LoaderFunction = async ({ request }) => {
   await requireUserId(request)
-  return null
+  return redirect('/home')
 }
 
 export const meta: MetaFunction = () => {
