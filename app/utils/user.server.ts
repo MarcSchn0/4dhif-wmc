@@ -26,3 +26,11 @@ export const getOtherUsers = async (userId: number) => {
         },
     })
 }
+
+export const getUserById = async (userId: number) => {
+    return prisma.user.findUnique({
+        where: {
+            id: userId,
+        },
+    });
+}
