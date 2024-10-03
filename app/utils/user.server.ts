@@ -27,6 +27,7 @@ export const getOtherUsers = async (userId: number) => {
     })
 }
 
+// @ts-ignore
 export const getUserById = async (userId: number) => {
     return prisma.user.findUnique({
         where: {
