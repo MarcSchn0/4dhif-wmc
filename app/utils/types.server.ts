@@ -3,6 +3,7 @@ export type RegisterForm = {
     password: string
     firstName: string
     lastName: string
+    department: string
 }
 
 export type LoginForm = {

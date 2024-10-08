@@ -15,6 +15,7 @@ model User {
   password      String
   firstName     String
   lastName      String
+  department    String
   authoredKudos Kudo[]   @relation("AuthoredKudos")
   receivedKudos Kudo[]   @relation("ReceivedKudos")
 }

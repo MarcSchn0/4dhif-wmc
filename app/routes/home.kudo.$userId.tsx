@@ -54,8 +54,12 @@ export default function KudoModal() {
         setFormData(data => ({ ...data, [field]: e.target.value }))
     }
 
+
+    //@ts-ignore
     const {
+        //@ts-ignore
         recipient,
+        //@ts-ignore
         user
     } = useLoaderData()
 
@@ -68,11 +72,11 @@ export default function KudoModal() {
                     <div className="text-center flex flex-col items-center gap-y-2 pr-8">
                         <UserCircle firstName={recipient.firstName} lastName={recipient.lastName} className="h-24 w-24" />
                         <p className="text-blue-300">
-                            {recipient.profile.firstName} {recipient.profile.lastName}
+                            {recipient.firstName} {recipient.lastName}
                         </p>
-                        {recipient.profile.department && (
+                        {recipient.department && (
                             <span className="px-2 py-1 bg-gray-300 rounded-xl text-blue-300 w-auto">
-                {recipient.profile.department[0].toUpperCase() + recipient.profile.department.toLowerCase().slice(1)}
+                {recipient.department[0].toUpperCase() + recipient.department.toLowerCase().slice(1)}
               </span>
                         )}
                     </div>
@@ -82,7 +86,7 @@ export default function KudoModal() {
                 className="w-full rounded-xl h-40 p-4"
                 value={formData.message}
                 onChange={e => handleChange(e, 'message')}
-                placeholder={`Say something nice about ${recipient.profile.firstName}...`}
+                placeholder={`Say something nice about ${recipient.firstName}...`}
             />
                         <div className="flex flex-col items-center md:flex-row md:justify-start gap-x-4">
                             {/* Select Boxes Go Here */}
