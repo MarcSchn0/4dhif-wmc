@@ -1,15 +1,16 @@
-import {json, LoaderFunction, redirect} from '@remix-run/node'
+import {ActionFunction, json, LoaderFunction, redirect} from '@remix-run/node'
 import { useLoaderData, useActionData } from '@remix-run/react'
 import {getUserById} from "~/utils/user.server";
 import { Portal } from '~/components/portal'
 import { Modal } from '~/components/modal';
-import { getUser } from '~/utils/auth.server'
+import {getUser, requireUserId} from '~/utils/auth.server'
 import { UserCircle } from '~/components/user-circle'
 import React, { useState } from 'react'
 import {KudoStyle} from '@prisma/client'
 import {SelectBox} from "~/components/select-box";
 import {Kudo} from "~/components/kudo";
 import {colorMap, emojiMap} from "~/utils/constants";
+import {createKudo} from "~/utils/kudos.server";
 
 // Define the types
 type ActionData = {
@@ -37,6 +38,52 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
     return json({ recipient, user })
 }
+
+export const action: ActionFunction = async ({ request }) => {
+    const userId = await requireUserId(request);
+
+    // 1. Parse the form data
+    const form = await request.formData();
+    const message = form.get('message');
+    const backgroundColor = form.get('backgroundColor');
+    const textColor = form.get('textColor');
+    const emoji = form.get('emoji');
+    const recipientId = form.get('recipientId');
+
+    // 2. Validate form data
+    if (
+        typeof message !== 'string' ||
+        typeof backgroundColor !== 'string' ||
+        typeof textColor !== 'string' ||
+        typeof emoji !== 'string' ||
+        typeof recipientId !== 'string'
+    ) {
+        return json({ error: `Invalid Form Data` }, { status: 400 });
+    }
+
+    if (!message.length) {
+        return json({ error: `Please provide a message.` }, { status: 400 });
+    }
+
+    // 3. Convert recipientId to a number
+    const recipientIdNumber = parseInt(recipientId, 10);
+    if (isNaN(recipientIdNumber)) {
+        return json({ error: `Invalid recipient ID.` }, { status: 400 });
+    }
+
+    // 4. Create the kudo
+    await createKudo(message, userId, recipientIdNumber, {
+        backgroundColor,
+        textColor,
+        emoji,
+    });
+
+    // 5. Redirect to the home page
+    return redirect('/home');
+};
+
+
+
 
 export default function KudoModal() {
     // Specify the types for actionData and data
@@ -149,7 +196,7 @@ export default function KudoModal() {
                 <br />
                 <p className="text-blue-600 font-semibold mb-2">Preview</p>
                 <div className="flex flex-col items-center md:flex-row gap-x-24 gap-y-2 md:gap-y-0">
-                    <Kudo firstName={user.firstName} lastName={user.lastName} kudo={formData} />
+                    <Kudo firstName={recipient.firstName} lastName={recipient.lastName} kudo={formData} />
                     <div className="flex-1" />
                     <button
                         type="submit"
