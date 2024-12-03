@@ -13,7 +13,7 @@ export function RecentBar({ kudos }: { kudos: KudoWithRecipient[] }) {
             <div className="h-full flex flex-col gap-y-10 mt-10">
                 {kudos.map(kudo => (
                     <div className="h-24 w-24 relative" key={kudo.recipient.id}>
-                        <UserCircle firstName={kudo.recipient.firstName} lastName={kudo.recipient.lastName} className="w-20 h-20" />
+                        <UserCircle firstName={kudo.recipient.firstName} lastName={kudo.recipient.lastName} profilePicture={kudo.recipient.profilePicture} className="w-20 h-20" />
                         <div className="h-8 w-8 text-3xl bottom-2 right-4 rounded-full absolute flex justify-center items-center">
                             {emojiMap[kudo?.style?.emoji || 'THUMBSUP']}
                         </div>

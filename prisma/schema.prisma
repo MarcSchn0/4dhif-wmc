@@ -8,20 +8,21 @@ datasource db {
 }
 
 model User {
-  id            Int     @id @default(autoincrement())
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  email         String   @unique
-  password      String
-  firstName     String
-  lastName      String
-  department    String
-  authoredKudos Kudo[]   @relation("AuthoredKudos")
-  receivedKudos Kudo[]   @relation("ReceivedKudos")
+  id             Int      @id @default(autoincrement())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  email          String   @unique
+  password       String
+  firstName      String
+  lastName       String
+  department     String
+  profilePicture String?
+  authoredKudos  Kudo[]   @relation("AuthoredKudos")
+  receivedKudos  Kudo[]   @relation("ReceivedKudos")
 }
 
 model KudoStyle {
-  id             Int     @id @default(autoincrement())
+  id              Int    @id @default(autoincrement())
   backgroundColor String
   textColor       String
   emoji           String
@@ -29,13 +30,13 @@ model KudoStyle {
 }
 
 model Kudo {
-  id          Int       @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   message     String
-  createdAt   DateTime  @default(now())
+  createdAt   DateTime   @default(now())
   style       KudoStyle? @relation(fields: [styleId], references: [id])
   styleId     Int?
-  author      User      @relation("AuthoredKudos", fields: [authorId], references: [id])
+  author      User       @relation("AuthoredKudos", fields: [authorId], references: [id])
   authorId    Int
-  recipient   User      @relation("ReceivedKudos", fields: [recipientId], references: [id])
+  recipient   User       @relation("ReceivedKudos", fields: [recipientId], references: [id])
   recipientId Int
 }

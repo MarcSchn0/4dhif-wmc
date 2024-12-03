@@ -2,8 +2,16 @@ import { useNavigate, useSearchParams } from '@remix-run/react';
 import { useState } from 'react';
 import { sortOptions } from '~/utils/constants';
 import { SelectBox } from '~/components/select-box';
+import {UserCircle} from "~/components/user-circle";
 
-export function SearchBar() {
+interface props {
+    firstName: string,
+    lastName: string,
+    profilePicture?: string,
+}
+
+
+export function SearchBar({firstName, lastName, profilePicture}: props) {
     const navigate = useNavigate();
     let [searchParams] = useSearchParams();
     const [sortValue, setSortValue] = useState(searchParams.get('sort') || '');
@@ -77,6 +85,13 @@ export function SearchBar() {
                 </button>
             )}
             <div className="flex-1" />
+            <UserCircle
+                className="h-14 w-14 transition duration-300 ease-in-out hover:scale-110 hover:border-2 hover:border-yellow-300"
+                firstName={firstName}
+                lastName={lastName}
+                profilePicture = {profilePicture}
+                onClick={() => navigate('profile')}
+            />
         </form>
     );
 }
