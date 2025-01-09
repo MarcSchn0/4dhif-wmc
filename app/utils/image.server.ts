@@ -1,4 +1,5 @@
-import fs from "fs"
+// @ts-ignore
+import fs from "fs-extra";
 import path from 'path';
 
 // needs `npm i @paralleldrive/cuid2`
