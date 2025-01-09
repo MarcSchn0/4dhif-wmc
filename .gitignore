@@ -7,5 +7,3 @@ node_modules
 .idea
 
 *.db
-
-/public/pps/
